@@ -1,6 +1,7 @@
 <template>
 	<div class="buttons-wrap">
-		<button class="btn btn--main"
+		<button
+			class="btn btn--main"
 			@click="symbolGenrator"
 			v-if="this.generated.length === 0"
 		>Начать</button>

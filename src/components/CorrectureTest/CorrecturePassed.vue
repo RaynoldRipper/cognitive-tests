@@ -16,12 +16,19 @@
 			>
 				Скрыть результаты
 			</button>
-			<button class="btn btn--main">Отправить результаты</button>
+			<button
+				class="btn btn--main"
+				@click="getResults"
+			>Отправить результаты</button>
 			<button
 				class="btn btn--main"
 				v-if="!passwordInput"
 				@click="passwordInput = true"
 			>Повторить тестированние</button>
+			<button
+				class="btn btn--main"
+				@click="nextTest"
+			>Перейти к следующему тесту</button>
 		</div>
 		<div
 			class="modal"
@@ -64,6 +71,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
 	data() {
 		return {
@@ -71,12 +80,14 @@ export default {
 			passwordInputValue: "",
 			password: "qwe123",
 			passwordValid: true,
+			posts: [],
+			errors: [],
 		};
 	},
 	props: {
 		showInfo: Number,
 	},
-	emits: ["show-results", "hide-results", "pull-storage-data"],
+	emits: ["show-results", "hide-results", "pull-storage-data", "correcture-passed"],
 	methods: {
 		showResults: function () {
 			this.$emit("show-results");
@@ -86,14 +97,36 @@ export default {
 		},
 		pullDatatFromStorage: function () {
 			this.$emit("pull-storage-data", [
-				JSON.parse(localStorage.generated),
-				JSON.parse(localStorage.checked),
-				JSON.parse(localStorage.success),
-				JSON.parse(localStorage.errosrs),
-				JSON.parse(localStorage.missed),
-				JSON.parse(localStorage.interval),
-				JSON.parse(localStorage.results),
+				JSON.parse(localStorage.correctureTest).generated,
+				JSON.parse(localStorage.correctureTest).checked,
+				JSON.parse(localStorage.correctureTest).success,
+				JSON.parse(localStorage.correctureTest).errosrs,
+				JSON.parse(localStorage.correctureTest).missed,
+				JSON.parse(localStorage.correctureTest).interval,
+				JSON.parse(localStorage.correctureTest).results,
 			]);
+		},
+		sendResults: function () {
+			axios
+				.post("http://192.168.88.59/wp-content/themes/functions/ajax/ajax.php")
+				.then((response) => {
+					this.posts = response.data;
+					console.log(response);
+				})
+				.catch((e) => {
+					this.errors.push(e);
+				});
+		},
+		getResults: function () {
+			axios
+				.get("https://192.168.88.59/wp-content/themes/functions/ajax/ajax.php")
+				.then((response) => {
+					// this.posts = response.data;
+					console.log(response);
+				})
+				.catch((e) => {
+					this.errors.push(e);
+				});
 		},
 		passwordHandler() {
 			if (this.password === this.passwordInputValue) {
@@ -104,8 +137,16 @@ export default {
 				console.log("error");
 			}
 		},
+		nextTest() {
+			if (typeof JSON.parse(localStorage.correctureTest).testPassed !== "undefined" && JSON.parse(localStorage.correctureTest).testPassed === true) {
+				this.$emit("correcture-passed")
+			}else{
+				let localData = JSON.parse(localStorage.correctureTest)
+				localData.testPassed = true
+				localStorage.correctureTest = JSON.stringify(localData)
+			}
+		},
 	},
-	computed: {},
 	mounted() {
 		this.pullDatatFromStorage();
 	},
@@ -120,7 +161,7 @@ export default {
 .input-main {
 	padding: 5px 10px;
 }
-.buttons-wrapper{
+.buttons-wrapper {
 	margin-top: 15px;
 	margin-bottom: 15px;
 }

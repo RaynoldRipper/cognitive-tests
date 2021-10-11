@@ -5,7 +5,10 @@
 			src="../assets/logo.png"
 		>
 		<div class="container">
-			<CorrectureComponent />
+			<CorrectureComponent
+				@correcture-passed="this.correctureTest = true"
+				@correcture-unpassed="this.correctureTest = false"
+			/>
 		</div>
 	</div>
 </template>
@@ -18,6 +21,22 @@ export default {
 	name: "Home",
 	components: {
 		CorrectureComponent,
+	},
+	data() {
+		return {
+			correctureTest: false,
+		};
+	},
+	methods: {
+		testChecker() {},
+	},
+	mounted() {
+
+	},
+	watch: {
+		correctureTest() {
+			console.log(this.correctureTest)
+		},
 	},
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<CorrecturePassed
-		v-if="storageKeyType('results') !== 'undefined'"
+		v-if="storageKeyType('correctureTest') !== 'undefined'"
 		:showInfo="showInfo"
 		@show-results="showResults"
 		@hide-results="showResults"
@@ -15,7 +15,7 @@
 		:intervalChecked="intervalChecked"
 		:missed="missed"
 		:currentTime="currentTime"
-		v-if="(storageKeyType('results') === 'undefined' || showInfo === 1)"
+		v-if="(storageKeyType('correctureTest') === 'undefined' || showInfo === 1)"
 	/>
 	<CorrectureContent
 		:symbols="1925"
@@ -28,13 +28,13 @@
 		@checked-unset="checkedUnset"
 		@start-timer="startTimer"
 		@check-missed="pushMissed"
-		v-if="storageKeyType('results') === 'undefined'"
+		v-if="storageKeyType('correctureTest') === 'undefined'"
 	/>
 	<CorrectureTimer
 		:currentTime="currentTime"
 		:timeLeft="timeLeft"
 		:timer="timer"
-		v-if="storageKeyType('results') === 'undefined'"
+		v-if="storageKeyType('correctureTest') === 'undefined'"
 	/>
 </template>
 
@@ -49,7 +49,7 @@ export default {
 		return {
 			showInfo: 0,
 
-			currentTime: 60,
+			currentTime: 10,
 			timeLeft: 0,
 			timer: null,
 			timerStatus: 0,
@@ -65,6 +65,9 @@ export default {
 			results: [],
 		};
 	},
+	emits: [
+		"correcture-unpassed"
+	],
 	components: {
 		CorrectureContent,
 		CorrectureTimer,
@@ -173,13 +176,16 @@ export default {
 			return typeof localStorage[key];
 		},
 		saveResults: function () {
-			localStorage.generated = JSON.stringify(this.generated);
-			localStorage.checked = JSON.stringify(this.checked);
-			localStorage.success = JSON.stringify(this.success);
-			localStorage.errosrs = JSON.stringify(this.errosrs);
-			localStorage.interval = JSON.stringify(this.intervalChecked);
-			localStorage.missed = JSON.stringify(this.missed);
-			localStorage.results = JSON.stringify(this.results);
+			let json = {
+				generated: this.generated,
+				checked: this.checked,
+				success: this.success,
+				errosrs: this.errosrs,
+				interval: this.intervalChecked,
+				missed: this.missed,
+				results: this.results,
+			};
+			localStorage.correctureTest = JSON.stringify(json);
 		},
 		pullStorageData: function (data) {
 			this.generated = data[0];
@@ -198,10 +204,14 @@ export default {
 			this.missed = [];
 			this.intervalChecked = [];
 			this.results = [];
-			localStorage.clear();
+
+			localStorage.removeItem("correctureTest");
+
 			this.currentTime = 60;
 			this.timeLeft = 0;
 			this.showInfo = 1;
+
+			this.$emit("correcture-unpadssed");
 		},
 	},
 	unmounted() {

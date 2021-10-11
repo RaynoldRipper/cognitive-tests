@@ -2,7 +2,7 @@
 	<div class="info">
 		<p
 			class="info__text"
-			v-if="storageKeyType('results') === 'undefined'"
+			v-if="storageKeyType('correctureTest') === 'undefined'"
 		>
 			Буквы которые нужно выделять:
 			<span
@@ -12,7 +12,7 @@
 		</p>
 		<div
 			class=""
-			v-else-if="storageKeyType('results') !== 'undefined'"
+			v-else-if="storageKeyType('correctureTest') !== 'undefined'"
 		>
 			<p>Ваши результаты:</p>
 			<p>Ошибок: {{errosrs.length}}.
