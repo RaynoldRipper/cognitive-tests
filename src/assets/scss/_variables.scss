@@ -1,0 +1,21 @@
+$success: #82d970;
+$warning: #ff9800;
+$danger: red;
+
+$primary: #43c978;
+$secondary: #529fff;
+
+$white: #ffffff;
+$black: #000000;
+$dark: #383838;
+$grey: #eeeeee;
+
+:root {
+    --success: #{$success};
+    --danger: #{$danger};
+    --primary: #{$primary};
+    --secondary: #{$secondary};
+    --white: #{$white};
+    --black: #{$black};
+    --grey: #{$grey};
+}

@@ -1,0 +1,22 @@
+.modal{
+    position: relative;
+    margin: auto;
+    max-width: 500px;
+    // padding: 20px 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    &-top{
+        background-color: $secondary;
+    }
+    // &-head{
+    //     padding-top: 15px;
+    //     padding-bottom: 15px;
+    // }
+    &-body{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    &-footer{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}

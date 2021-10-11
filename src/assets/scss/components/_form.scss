@@ -1,0 +1,19 @@
+.notific {
+    font-size: 14px;
+    margin-top: 10px;
+
+    &--error {
+        color: $danger;
+    }
+}
+
+.input-field {
+    max-width: 50%;
+    margin: auto;
+
+    input {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
