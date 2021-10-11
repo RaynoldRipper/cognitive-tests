@@ -6,6 +6,7 @@
 		@hide-results="showResults"
 		@pull-storage-data="pullStorageData"
 		@clear-test="clearTest"
+		@correcture-passed="passed"
 	/>
 	<CorrectureInfo
 		:accessSymbols="accessSymbols"
@@ -66,7 +67,8 @@ export default {
 		};
 	},
 	emits: [
-		"correcture-unpassed"
+		"correcture-unpassed", 
+		"correcture-passed"
 	],
 	components: {
 		CorrectureContent,
@@ -213,6 +215,9 @@ export default {
 
 			this.$emit("correcture-unpadssed");
 		},
+		passed: function(){
+			this.$emit("correcture-passed")
+		}
 	},
 	unmounted() {
 		this.stopTimer();

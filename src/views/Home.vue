@@ -6,9 +6,11 @@
 		>
 		<div class="container">
 			<CorrectureComponent
-				@correcture-passed="this.correctureTest = true"
+				@correcture-passed="testChecker"
 				@correcture-unpassed="this.correctureTest = false"
+				v-if="this.correctureTest === false"
 			/>
+			<ColorTableComponent v-else-if="this.correctureTest === true" />
 		</div>
 	</div>
 </template>
@@ -16,11 +18,13 @@
 <script>
 // @ is an alias to /src
 import CorrectureComponent from "@/components/CorrectureTest/CorrectureComponent";
+import ColorTableComponent from "@/components/ColorTable/ColorTableComponent";
 
 export default {
 	name: "Home",
 	components: {
 		CorrectureComponent,
+		ColorTableComponent,
 	},
 	data() {
 		return {
@@ -28,14 +32,14 @@ export default {
 		};
 	},
 	methods: {
-		testChecker() {},
+		testChecker() {
+			this.correctureTest = true;
+		},
 	},
-	mounted() {
-
-	},
+	mounted() {},
 	watch: {
 		correctureTest() {
-			console.log(this.correctureTest)
+			console.log(this.correctureTest);
 		},
 	},
 };
